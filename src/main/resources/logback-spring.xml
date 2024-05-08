@@ -1,0 +1,84 @@
+<configuration>
+
+    <property name="appHome" value="${application.home:-.}" />
+    <property name="appName" value="ms-user" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${appHome}/logs/${appName}.application.%d{yyyy-MM-dd, UTF-3}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-5level %date{HH:mm:ss.SSS} - [traceId=%X{traceId}] - %marker - %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="METRICSFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${appHome}/logs/${appName}.metrics.%d{yyyy-MM-dd, UTF-3}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-5level %date{HH:mm:ss.SSS} - [traceId=%X{traceId}] - %marker - %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5level %date{HH:mm:ss.SSS} - [traceId=%X{traceId}] - %marker - %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_URL:-localhost:5000}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname": "${appName}", "environment": "${MARATHON_APP_LABEL_ENVIRONMENT:-ENV_NOT_DEFINED}"}
+            </customFields>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="STDOUT"/>
+    </appender>
+
+    <appender name="ASYNCLOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH"/>
+    </appender>
+
+    <logger name="play" level="WARN"/>
+
+    <appender name="ASYNCMETRICSFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="METRICSFILE"/>
+    </appender>
+    <logger name="metrics" level="WARN">
+        <appender-ref ref="ASYNCMETRICSFILE"/>
+        <appender-ref ref="ASYNCSTDOUT"/>
+    </logger>
+
+    <logger name="adapter.in" level="INFO"/>
+    <logger name="adapter.out" level="INFO   "/>
+    <logger name="usecase" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNCFILE"/>
+        <appender-ref ref="ASYNCSTDOUT"/>
+        <appender-ref ref="ASYNCLOGSTASH"/>
+    </root>
+
+</configuration>

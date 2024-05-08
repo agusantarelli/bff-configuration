@@ -34,9 +34,25 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.security:spring-security-oauth2-resource-server")
+	implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+	implementation("net.logstash.logback:logstash-logback-encoder:6.6")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
+	// KoTest
+	testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
+	testImplementation("io.kotest:kotest-assertions-core:5.5.4")
+	testImplementation("io.kotest:kotest-property:5.5.4")
+
+
+	// Mockk
+	testImplementation("io.mockk:mockk:1.13.3")
+
+	//Mockito
+	testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+	testImplementation("org.mockito:mockito-core:3.12.4")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 }
