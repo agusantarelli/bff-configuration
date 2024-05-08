@@ -25,7 +25,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
-            .addFilterAfter(CustomHeaderFilter(publicKey, jwtDecoder()), BasicAuthenticationFilter::class.java)
+            .addFilterBefore(CustomHeaderFilter(publicKey, jwtDecoder()), BasicAuthenticationFilter::class.java)
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/api/v1").authenticated()
