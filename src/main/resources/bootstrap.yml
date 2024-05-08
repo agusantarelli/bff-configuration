@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: ${MARATHON_APP_LABEL_ENVIRONMENT}
+  application:
+    name: ${CONFIG_APP:onboarding-gateway}

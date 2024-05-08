@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+    application:
+      name: bff-configuration
+constants:
+  auth:
+    publicKey: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqPGhp8sCCQQZBbwBbynYvjxtckKL5OyzpRaHsLzD5UULgRA1K/+NCu/jrKq5tMHJSK2n9zrLUo7G7IIeecQ0O4G0NzmrrSlw9dJhjPoOJE+WKmVXiZpsCVLu+1lBINOHoez8xRN9qQ9mCc6+LPZuLNU2yoQFcOMObQ/02+W7UrJMuwWODVVVOgeebbQQgi3B748MPq4lXFPIbGwprieHOXDcTRdY5dVOX7FSyeehj7X/SQP+e1XnMCDUv6y+wTFUlyb3tToV8Ytnxzlz4e7rhrUoE6DhuT2fFEnIocHtxDQhk1Vj6k5dGVMr6uqztWkTW3JcyXM7hDjjqke2MAATJQIDAQAB"
